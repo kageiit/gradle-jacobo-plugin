@@ -1,0 +1,2 @@
+include ':jacobo-plugin'
+include ':example'

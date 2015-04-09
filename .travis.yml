@@ -1,0 +1,9 @@
+language: groovy
+jdk:
+  - oraclejdk7
+env:
+  - TERM=dumb
+script:
+  - ./gradlew check
+after_success:
+  - ./gradlew cobertura coveralls

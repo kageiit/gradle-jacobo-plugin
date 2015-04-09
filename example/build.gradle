@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'com.kageiit.jacobo' version '1.0.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+jacocoTestReport.dependsOn("test")
+tasks.getByName("jacobo").dependsOn(jacocoTestReport)
+
+jacobo {
+    jacocoReport file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    coberturaReport file("${project.buildDir}/reports/cobertura/cobertura.xml")
+    srcDirs = sourceSets.main.java.srcDirs
+}

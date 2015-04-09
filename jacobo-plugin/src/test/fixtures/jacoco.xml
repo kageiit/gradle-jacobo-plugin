@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report name="example">
+    <sessioninfo id="test" start="1428528104869" dump="1428528105940" />
+    <package name="com/kageiit">
+        <class name="com/kageiit/Jacobo">
+            <method name="&lt;init&gt;" desc="()V" line="3">
+                <counter type="INSTRUCTION" missed="0" covered="3" />
+                <counter type="LINE" missed="0" covered="1" />
+                <counter type="COMPLEXITY" missed="0" covered="1" />
+                <counter type="METHOD" missed="0" covered="1" />
+            </method>
+            <method name="foo" desc="()V" line="6">
+                <counter type="INSTRUCTION" missed="3" covered="7" />
+                <counter type="BRANCH" missed="1" covered="1" />
+                <counter type="LINE" missed="1" covered="3" />
+                <counter type="COMPLEXITY" missed="1" covered="1" />
+                <counter type="METHOD" missed="0" covered="1" />
+            </method>
+            <method name="bar" desc="()Z" line="14">
+                <counter type="INSTRUCTION" missed="0" covered="2" />
+                <counter type="LINE" missed="0" covered="1" />
+                <counter type="COMPLEXITY" missed="0" covered="1" />
+                <counter type="METHOD" missed="0" covered="1" />
+            </method>
+            <counter type="INSTRUCTION" missed="3" covered="12" />
+            <counter type="BRANCH" missed="1" covered="1" />
+            <counter type="LINE" missed="1" covered="5" />
+            <counter type="COMPLEXITY" missed="1" covered="3" />
+            <counter type="METHOD" missed="0" covered="3" />
+            <counter type="CLASS" missed="0" covered="1" />
+        </class>
+        <sourcefile name="Jacobo.java">
+            <line nr="3" mi="0" ci="3" mb="0" cb="0" />
+            <line nr="6" mi="0" ci="3" mb="1" cb="1" />
+            <line nr="7" mi="3" ci="0" mb="0" cb="0" />
+            <line nr="9" mi="0" ci="3" mb="0" cb="0" />
+            <line nr="11" mi="0" ci="1" mb="0" cb="0" />
+            <line nr="14" mi="0" ci="2" mb="0" cb="0" />
+            <counter type="INSTRUCTION" missed="3" covered="12" />
+            <counter type="BRANCH" missed="1" covered="1" />
+            <counter type="LINE" missed="1" covered="5" />
+            <counter type="COMPLEXITY" missed="1" covered="3" />
+            <counter type="METHOD" missed="0" covered="3" />
+            <counter type="CLASS" missed="0" covered="1" />
+        </sourcefile>
+        <counter type="INSTRUCTION" missed="3" covered="12" />
+        <counter type="BRANCH" missed="1" covered="1" />
+        <counter type="LINE" missed="1" covered="5" />
+        <counter type="COMPLEXITY" missed="1" covered="3" />
+        <counter type="METHOD" missed="0" covered="3" />
+        <counter type="CLASS" missed="0" covered="1" />
+    </package>
+    <counter type="INSTRUCTION" missed="3" covered="12" />
+    <counter type="BRANCH" missed="1" covered="1" />
+    <counter type="LINE" missed="1" covered="5" />
+    <counter type="COMPLEXITY" missed="1" covered="3" />
+    <counter type="METHOD" missed="0" covered="3" />
+    <counter type="CLASS" missed="0" covered="1" />
+</report>
