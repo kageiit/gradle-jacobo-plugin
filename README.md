@@ -1,13 +1,12 @@
 gradle-jacobo-plugin
 ======================
-[![Build Status](https://travis-ci.org/kageiit/gradle-jacobo-plugin.svg?branch=master)](https://travis-ci.org/kageiit/gradle-jacobo-plugin) [![Coverage Status](https://coveralls.io/repos/kageiit/gradle-jacobo-plugin/badge.svg?branch=master)](https://coveralls.io/r/kageiit/gradle-jacobo-plugin?branch=master)
+[![Build Status](https://travis-ci.org/kageiit/gradle-jacobo-plugin.svg?branch=master)](https://travis-ci.org/kageiit/gradle-jacobo-plugin) [![Coverage Status](https://coveralls.io/repos/kageiit/gradle-jacobo-plugin/badge.svg?branch=master)](https://coveralls.io/r/kageiit/gradle-jacobo-plugin?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.kageiit/jacobo-plugin/badge.svg) ](https://maven-badges.herokuapp.com/maven-central/com.kageiit/jacobo-plugin) [![Jcenter](https://api.bintray.com/packages/kageiit/gradle-plugins/jacobo-plugin/images/download.svg) ](https://bintray.com/kageiit/gradle-plugins/jacobo-plugin/_latestVersion)
 
 Jacobo is a [Gradle](https://www.gradle.org) plugin that converts [JaCoCo](http://www.eclemma.org/jacoco/) coverage reports to [Cobertura](http://cobertura.github.io/cobertura/) coverage reports.
 
 Usage
 -----
 Add the following to buildscript:
-
 ```groovy
 buildscript {
     dependencies {
@@ -17,7 +16,6 @@ buildscript {
 ```
 
 Apply and configure jacobo like so:
-
 ```groovy
 apply plugin: 'com.kageiit.jacobo'
 
@@ -26,6 +24,11 @@ jacobo {
     coberturaReport file("${project.buildDir}/reports/cobertura/cobertura.xml")
     srcDirs = sourceSets.main.java.srcDirs
 }
+```
+
+Run the `jacobo` task to convert jacoco report to cobertura report.
+```bash
+./gradlew jacobo
 ```
 
 See example project for detailed configuration. This plugin was mostly ported over from [cover2cover](https://github.com/rix0rrr/cover2cover).
