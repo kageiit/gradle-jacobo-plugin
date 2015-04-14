@@ -7,7 +7,7 @@ import org.junit.Before
 import org.junit.Test
 
 class JacoboPluginTest {
-    static final Project project = ProjectBuilder.builder().withProjectDir(new File("src/test")).withName("root").build()
+    Project project = ProjectBuilder.builder().withProjectDir(new File("src/test")).withName("root").build()
 
     @Before
     public void setUp() {
@@ -28,6 +28,16 @@ class JacoboPluginTest {
         task.convert()
         String converted = project.jacobo.coberturaReport.text.replaceAll("\\s+","")
         String expected = new File('src/test/fixtures/cobertura.xml').text.replaceAll("\\s+","")
+        assert converted.equals(expected)
+    }
+
+    @Test
+    public void convertWithNoTimeStamp() {
+        project.jacobo.jacocoReport =  new File('src/test/fixtures/jacocoNoTs.xml')
+        JacoboTask task = project.getTasksByName("jacobo", false).first()
+        task.convert()
+        String converted = project.jacobo.coberturaReport.text.replaceAll("\\s+","")
+        String expected = new File('src/test/fixtures/coberturaNoTs.xml').text.replaceAll("\\s+","")
         assert converted.equals(expected)
     }
 }

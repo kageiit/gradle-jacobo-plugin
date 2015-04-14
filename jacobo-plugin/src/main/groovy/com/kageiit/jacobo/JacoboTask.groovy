@@ -23,7 +23,11 @@ class JacoboTask extends DefaultTask {
         def sw = new StringWriter()
         def cobertura = new MarkupBuilder(sw)
 
-        cobertura.coverage(timestamp: ((jacoco.sessioninfo.first().@start).toLong() / 1000).toLong(), 'line-rate': counter(jacoco, LINE), 'branch-rate': counter(jacoco, BRANCH), complexity: counter(jacoco, COMPLEXITY, this.&sum)) {
+        def timestamp = 0L
+        if(jacoco.sessioninfo != null && !jacoco.sessioninfo.isEmpty()) {
+            timestamp = ((jacoco.sessioninfo.first().@start).toLong() / 1000).toLong()
+        }
+        cobertura.coverage(timestamp: timestamp, 'line-rate': counter(jacoco, LINE), 'branch-rate': counter(jacoco, BRANCH), complexity: counter(jacoco, COMPLEXITY, this.&sum)) {
             sources {
                 config.srcDirs.each { src ->
                     source(src)
