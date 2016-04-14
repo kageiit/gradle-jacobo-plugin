@@ -9,10 +9,17 @@ Usage
 Add the following to buildscript:
 ```groovy
 buildscript {
-    dependencies {
-        classpath 'com.kageiit:jacobo-plugin:1.+'
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
     }
+  }
+  dependencies {
+    classpath "gradle.plugin.com.kageiit:jacobo-plugin:1.0.3"
+  }
 }
+
+apply plugin: "com.kageiit.jacobo"
 ```
 
 Apply and configure jacobo like so:
