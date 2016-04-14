@@ -1,6 +1,6 @@
 gradle-jacobo-plugin
 ======================
-[![Build Status](https://travis-ci.org/kageiit/gradle-jacobo-plugin.svg?branch=master)](https://travis-ci.org/kageiit/gradle-jacobo-plugin) [![Coverage Status](https://coveralls.io/repos/github/kageiit/gradle-jacobo-plugin/badge.svg?branch=master)](https://coveralls.io/github/kageiit/gradle-jacobo-plugin?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.kageiit/jacobo-plugin/badge.svg) ](https://maven-badges.herokuapp.com/maven-central/com.kageiit/jacobo-plugin) [![Jcenter](https://api.bintray.com/packages/kageiit/gradle-plugins/jacobo-plugin/images/download.svg) ](https://bintray.com/kageiit/gradle-plugins/jacobo-plugin/_latestVersion)
+[![Build Status](https://travis-ci.org/kageiit/gradle-jacobo-plugin.svg?branch=master)](https://travis-ci.org/kageiit/gradle-jacobo-plugin) [![Coverage Status](https://coveralls.io/repos/github/kageiit/gradle-jacobo-plugin/badge.svg?branch=master)](https://coveralls.io/github/kageiit/gradle-jacobo-plugin?branch=master)
 
 Jacobo is a [Gradle](https://www.gradle.org) plugin that converts [JaCoCo](http://www.eclemma.org/jacoco/) coverage reports to [Cobertura](http://cobertura.github.io/cobertura/) coverage reports.
 
