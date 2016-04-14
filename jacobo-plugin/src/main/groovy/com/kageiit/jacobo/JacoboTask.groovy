@@ -6,20 +6,17 @@ import org.gradle.api.tasks.TaskAction
 
 class JacoboTask extends DefaultTask {
     static final String NAME = "jacobo"
-    static final XmlSlurper XML_SLURPER = new XmlSlurper(false, false, true)
     static final String LINE = 'LINE'
     static final String BRANCH = 'BRANCH'
     static final String COMPLEXITY = 'COMPLEXITY'
 
     JacoboExtension config
 
-    JacoboTask() {
-        XML_SLURPER.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
-    }
-
     @TaskAction
     void convert() {
-        GPathResult jacoco = XML_SLURPER.parse(config.jacocoReport)
+        XmlSlurper slurper = new XmlSlurper(false, false, true)
+        slurper.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+        GPathResult jacoco = slurper.parse(config.jacocoReport)
         def sw = new StringWriter()
         def cobertura = new MarkupBuilder(sw)
 

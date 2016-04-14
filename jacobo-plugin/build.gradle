@@ -1,13 +1,16 @@
 plugins {
     id 'groovy'
     id 'maven'
-    id 'net.saliman.cobertura' version '2.2.7'
-    id 'com.github.kt3k.coveralls' version '2.3.1'
-    id 'nu.studer.plugindev' version '1.0.3'
+    id 'net.saliman.cobertura' version '2.3.1'
+    id 'com.github.kt3k.coveralls' version '2.6.3'
+}
+apply plugin: "com.gradle.plugin-publish"
+
+repositories {
+    jcenter()
 }
 
-version = "1.0.2"
-
+version = "1.0.3"
 group = "com.kageiit"
 
 dependencies {
@@ -15,25 +18,18 @@ dependencies {
     compile localGroovy()
 }
 
-plugindev {
-    pluginId 'com.kageiit.jacobo'
-    pluginName 'jacobo-plugin'
-    pluginImplementationClass 'com.kageiit.jacobo.JacoboPlugin'
-    pluginDescription 'Gradle plugin to convert JaCoCo coverage reports to Cobertura coverage reports.'
-    pluginLicenses 'Apache-2.0'
-    pluginTags 'gradle', 'plugin', 'cobertura', 'jacoco'
-    authorId 'kageiit'
-    authorName 'Gautam Korlam'
-    authorEmail 'kageiit@gmail.com'
-    projectUrl 'https://github.com/kageiit/gradle-jacobo-plugin'
-    projectInceptionYear '2015'
-    done()
-}
+pluginBundle {
+    website = 'https://github.com/kageiit/gradle-jacobo-plugin'
+    vcsUrl = 'https://github.com/kageiit/gradle-jacobo-plugin'
+    description = 'Gradle plugin to convert JaCoCo coverage reports to Cobertura coverage reports'
+    tags = ['cobertura', 'jacoco']
 
-bintray {
-    user = System.getenv("BINTRAY_USER")
-    key = System.getenv("BINTRAY_API_KEY")
-    pkg.repo = 'gradle-plugins'
+    plugins {
+        jacoboPlugin {
+            id = 'com.kageiit.jacobo'
+            displayName = 'Gradle Jacobo plugin'
+        }
+    }
 }
 
 cobertura.coverageFormats = ['html', 'xml']
