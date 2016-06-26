@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
-    id 'com.kageiit.jacobo' version '1.0.0'
+    id 'com.kageiit.jacobo' version '2.0.0'
 }
 
 repositories {
@@ -18,10 +18,11 @@ jacocoTestReport {
     }
 }
 jacocoTestReport.dependsOn("test")
-tasks.getByName("jacobo").dependsOn(jacocoTestReport)
 
-jacobo {
-    jacocoReport file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-    coberturaReport file("${project.buildDir}/reports/cobertura/cobertura.xml")
-    srcDirs = sourceSets.main.java.srcDirs
-}
+import com.kageiit.jacobo.JacoboTask
+
+tasks.create("jacobo", JacoboTask, {
+    it.jacocoReport = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    it.coberturaReport = file("${project.buildDir}/reports/cobertura/cobertura.xml")
+    it.srcDirs = sourceSets.main.java.srcDirs
+}).dependsOn(jacocoTestReport)
