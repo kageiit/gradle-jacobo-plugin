@@ -1,32 +1,44 @@
 package com.kageiit.jacobo
+
 import groovy.util.slurpersupport.GPathResult
 import groovy.xml.MarkupBuilder
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
 class JacoboTask extends DefaultTask {
+
     static final String NAME = "jacobo"
     static final String LINE = 'LINE'
     static final String BRANCH = 'BRANCH'
     static final String COMPLEXITY = 'COMPLEXITY'
 
-    JacoboExtension config
+    @InputFile
+    File jacocoReport
+
+    @InputFiles
+    String[] srcDirs = {}
+
+    @OutputFile
+    File coberturaReport
 
     @TaskAction
     void convert() {
         XmlSlurper slurper = new XmlSlurper(false, false, true)
         slurper.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
-        GPathResult jacoco = slurper.parse(config.jacocoReport)
+        GPathResult jacoco = slurper.parse(jacocoReport)
         def sw = new StringWriter()
         def cobertura = new MarkupBuilder(sw)
 
         def timestamp = 0L
-        if(jacoco.sessioninfo != null && !jacoco.sessioninfo.isEmpty()) {
+        if (jacoco.sessioninfo != null && !jacoco.sessioninfo.isEmpty()) {
             timestamp = ((jacoco.sessioninfo.first().@start).toLong() / 1000).toLong()
         }
         cobertura.coverage(timestamp: timestamp, 'line-rate': counter(jacoco, LINE), 'branch-rate': counter(jacoco, BRANCH), complexity: counter(jacoco, COMPLEXITY, this.&sum)) {
             sources {
-                config.srcDirs.each { src ->
+                srcDirs.each { src ->
                     source(src)
                 }
             }
@@ -37,7 +49,7 @@ class JacoboTask extends DefaultTask {
                             pkg.class.each { clazz ->
                                 def classname = clazz.@name.toString()
                                 def filename = guess_filename(classname)
-                                def basename = classname.substring(classname.lastIndexOf("/") + 1).replaceAll("\\u0024.*","")
+                                def basename = classname.substring(classname.lastIndexOf("/") + 1).replaceAll("\\u0024.*", "")
                                 basename = "${basename}.java"
                                 'class'(name: (classname).toString().replace("/", '.'), filename: filename, 'line-rate': counter(clazz, LINE), 'branch-rate': counter(clazz, BRANCH), complexity: counter(clazz, COMPLEXITY, this.&sum)) {
                                     def lynes = pkg.sourcefile.find {
@@ -48,7 +60,7 @@ class JacoboTask extends DefaultTask {
                                         mthds.each { mthd ->
                                             'method'(name: (mthd.@name).toString().replace("/", '.'), signature: mthd.@desc, 'line-rate': counter(mthd, LINE), 'branch-rate': counter(mthd, BRANCH), complexity: counter(mthd, COMPLEXITY, this.&sum)) {
                                                 lines {
-                                                    method_lines(mthd, mthds, lynes).each{ lyne ->
+                                                    method_lines(mthd, mthds, lynes).each { lyne ->
                                                         def mb = lyne.@mb.toInteger()
                                                         def cb = lyne.@cb.toInteger()
                                                         def ci = lyne.@ci.toInteger()
@@ -73,7 +85,7 @@ class JacoboTask extends DefaultTask {
                                         }
                                     }
                                     lines {
-                                        lynes.each{ lyne ->
+                                        lynes.each { lyne ->
                                             def mb = lyne.@mb.toInteger()
                                             def cb = lyne.@cb.toInteger()
                                             def ci = lyne.@ci.toInteger()
@@ -102,9 +114,9 @@ class JacoboTask extends DefaultTask {
             }
         }
 
-        config.coberturaReport.parentFile.mkdirs()
-        config.coberturaReport.createNewFile()
-        config.coberturaReport.write('<?xml version="1.0" encoding="UTF-8"?>\n' + sw)
+        coberturaReport.parentFile.mkdirs()
+        coberturaReport.createNewFile()
+        coberturaReport.write('<?xml version="1.0" encoding="UTF-8"?>\n' + sw)
     }
 
     def static method_lines(method, methods, lines) {

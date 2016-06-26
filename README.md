@@ -15,22 +15,20 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.com.kageiit:jacobo-plugin:1.0.3"
+    classpath "gradle.plugin.com.kageiit:jacobo-plugin:2.0.0"
   }
 }
 
 apply plugin: "com.kageiit.jacobo"
 ```
 
-Apply and configure jacobo like so:
+Create a jacobo task like so:
 ```groovy
-apply plugin: 'com.kageiit.jacobo'
-
-jacobo {
-    jacocoReport file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-    coberturaReport file("${project.buildDir}/reports/cobertura/cobertura.xml")
-    srcDirs = sourceSets.main.java.srcDirs
-}
+project.tasks.create("jacobo", JacoboTask, {
+  it.jacocoReport = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+  it.coberturaReport = file("${project.buildDir}/reports/cobertura/cobertura.xml")
+  it.srcDirs = sourceSets.main.java.srcDirs
+})
 ```
 
 Run the `jacobo` task to convert jacoco report to cobertura report.
