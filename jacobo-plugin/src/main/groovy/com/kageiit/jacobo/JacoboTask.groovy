@@ -22,7 +22,7 @@ class JacoboTask extends DefaultTask {
     String[] srcDirs = {}
 
     @Input
-    Set<String> includeFileNames = null
+    Set<String> includeFileNames = [] as Set
 
     @OutputFile
     File coberturaReport
@@ -54,7 +54,7 @@ class JacoboTask extends DefaultTask {
                                 def filename = guess_filename(classname)
                                 def basename = classname.substring(classname.lastIndexOf("/") + 1).replaceAll("\\u0024.*", "")
                                 basename = "${basename}.java" as String
-                                if (includeFileNames != null && !includeFileNames.contains(basename)) {
+                                if (!includeFileNames.empty && !includeFileNames.contains(basename)) {
                                     return
                                 }
                                 'class'(name: (classname).toString().replace("/", '.'), filename: filename, 'line-rate': counter(clazz, LINE), 'branch-rate': counter(clazz, BRANCH), complexity: counter(clazz, COMPLEXITY, this.&sum)) {
