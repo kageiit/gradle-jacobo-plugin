@@ -15,7 +15,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.com.kageiit:jacobo-plugin:2.0.2"
+    classpath "gradle.plugin.com.kageiit:jacobo-plugin:2.0.4"
   }
 }
 
