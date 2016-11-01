@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
-    id 'com.kageiit.jacobo' version '2.0.2'
+    id 'com.kageiit.jacobo' version '2.0.4'
 }
 
 repositories {
