@@ -15,7 +15,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.com.kageiit:jacobo-plugin:2.0.4"
+    classpath "gradle.plugin.com.kageiit:jacobo-plugin:2.0.5"
   }
 }
 
@@ -28,7 +28,7 @@ project.tasks.create("jacobo", JacoboTask, {
   it.jacocoReport = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
   it.coberturaReport = file("${project.buildDir}/reports/cobertura/cobertura.xml")
   it.srcDirs = sourceSets.main.java.srcDirs
-  it.includeFileNames = ['File1.java', 'File2.java' ] // Optional to only output coverage for selected file names
+  it.includeFileNames = ['File1.java', 'File2.java' ] // Only output coverage for selected file names
 })
 ```
 

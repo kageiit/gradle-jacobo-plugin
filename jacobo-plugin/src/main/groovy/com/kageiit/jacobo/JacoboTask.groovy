@@ -3,6 +3,7 @@ package com.kageiit.jacobo
 import groovy.util.slurpersupport.GPathResult
 import groovy.xml.MarkupBuilder
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputFile
@@ -20,7 +21,8 @@ class JacoboTask extends DefaultTask {
     @InputFiles
     String[] srcDirs = {}
 
-    Set<String> includeFileNames
+    @Input
+    Set<String> includeFileNames = null
 
     @OutputFile
     File coberturaReport
