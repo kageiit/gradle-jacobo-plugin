@@ -3,6 +3,7 @@ package com.kageiit.jacobo
 import groovy.util.slurpersupport.GPathResult
 import groovy.xml.MarkupBuilder
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputFile
@@ -10,7 +11,6 @@ import org.gradle.api.tasks.TaskAction
 
 class JacoboTask extends DefaultTask {
 
-    static final String NAME = "jacobo"
     static final String LINE = 'LINE'
     static final String BRANCH = 'BRANCH'
     static final String COMPLEXITY = 'COMPLEXITY'
@@ -20,6 +20,9 @@ class JacoboTask extends DefaultTask {
 
     @InputFiles
     String[] srcDirs = {}
+
+    @Input
+    List<String> includeFileNames
 
     @OutputFile
     File coberturaReport
@@ -50,7 +53,10 @@ class JacoboTask extends DefaultTask {
                                 def classname = clazz.@name.toString()
                                 def filename = guess_filename(classname)
                                 def basename = classname.substring(classname.lastIndexOf("/") + 1).replaceAll("\\u0024.*", "")
-                                basename = "${basename}.java"
+                                basename = "${basename}.java" as String
+                                if (includeFileNames != null && !includeFileNames.contains(basename)) {
+                                    return
+                                }
                                 'class'(name: (classname).toString().replace("/", '.'), filename: filename, 'line-rate': counter(clazz, LINE), 'branch-rate': counter(clazz, BRANCH), complexity: counter(clazz, COMPLEXITY, this.&sum)) {
                                     def lynes = pkg.sourcefile.find {
                                         it.@name.equals(basename)

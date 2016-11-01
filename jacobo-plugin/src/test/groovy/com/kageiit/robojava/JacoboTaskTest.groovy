@@ -45,4 +45,18 @@ class JacoboTaskTest {
         String expected = new File('src/test/fixtures/coberturaNoTs.xml').text.replaceAll("\\s+", "")
         assert converted.equals(expected)
     }
+
+    @Test
+    public void convertWithIncludes() {
+        jacobo = project.tasks.create("jacobo3", JacoboTask, {
+            it.jacocoReport = new File('src/test/fixtures/jacocoFileNames.xml')
+            it.coberturaReport = File.createTempFile("temp", ".tmp")
+            it.srcDirs = ['src/main/groovy']
+            it.includeFileNames = ['Jacobo.java']
+        })
+        jacobo.convert()
+        String converted = jacobo.coberturaReport.text.replaceAll("\\s+", "")
+        String expected = new File('src/test/fixtures/coberturaFileNames.xml').text.replaceAll("\\s+", "")
+        assert converted.equals(expected)
+    }
 }
