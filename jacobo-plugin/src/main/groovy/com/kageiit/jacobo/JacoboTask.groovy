@@ -126,6 +126,10 @@ class JacoboTask extends DefaultTask {
     }
 
     def static method_lines(method, methods, lines) {
+        if (method.@line.isEmpty()) {
+            return []
+        }
+
         def start_line = method.@line.toInteger()
         def larger = methods.findAll { it.@line.toInteger() > start_line }.collect {
             it.@line.toInteger()
