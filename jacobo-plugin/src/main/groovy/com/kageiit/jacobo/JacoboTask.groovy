@@ -131,12 +131,20 @@ class JacoboTask extends DefaultTask {
         }
 
         def start_line = method.@line.toInteger()
-        def larger = methods.findAll { it.@line.toInteger() > start_line }.collect {
+        def larger = methods.findAll { !it.@line.isEmpty() && it.@line.toInteger() > start_line }.collect {
             it.@line.toInteger()
         }
         def end_line = larger.empty ? 99999999 : larger.min()
 
-        return lines.findAll { start_line <= it.@nr.toInteger() && it.@nr.toInteger() < end_line }
+        def method_lines = lines.findAll { start_line <= it.@nr.toInteger() && it.@nr.toInteger() < end_line }
+
+        // Don't go beyond the number of lines known to be associated with this method
+        def line_counter = method.counter.find { it.@type == LINE }
+        if (!line_counter) {
+            return method_lines
+        }
+        def limit = line_counter.@missed.toInteger() + line_counter.@covered.toInteger()
+        return method_lines.take(limit)
     }
 
     def static fraction(covered, missed) {
