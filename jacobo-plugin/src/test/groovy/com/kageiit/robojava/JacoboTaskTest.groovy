@@ -59,4 +59,17 @@ class JacoboTaskTest {
         String expected = new File('src/test/fixtures/coberturaFileNames.xml').text.replaceAll("\\s+", "")
         assert converted.equals(expected)
     }
+
+    @Test
+    public void convertWithMissingLineNumber() {
+        jacobo = project.tasks.create("jacobo4", JacoboTask, {
+            it.jacocoReport = new File('src/test/fixtures/jacocoMissingLineNumber.xml')
+            it.coberturaReport = File.createTempFile("temp", ".tmp")
+            it.srcDirs = ['src/main/groovy']
+        })
+        jacobo.convert()
+        String converted = jacobo.coberturaReport.text.replaceAll("\\s+", "")
+        String expected = new File('src/test/fixtures/coberturaMissingLineNumber.xml').text.replaceAll("\\s+", "")
+        assert converted.equals(expected)
+    }
 }
