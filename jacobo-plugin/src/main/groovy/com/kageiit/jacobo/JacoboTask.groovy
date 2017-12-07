@@ -46,18 +46,21 @@ class JacoboTask extends DefaultTask {
                 }
             }
             packages {
+                def exts = sourceFileExts(jacoco.package)
                 jacoco.package.each { pkg ->
                     'package'(name: (pkg.@name).toString().replace("/", '.'), 'line-rate': counter(pkg, LINE), 'branch-rate': counter(pkg, BRANCH), complexity: counter(pkg, COMPLEXITY, this.&sum)) {
                         classes {
                             pkg.class.each { clazz ->
                                 def classname = clazz.@name.toString()
-                                def filename = guess_filename(classname)
+                                def pathToFile = pathToFile(classname)
+                                def topLevelClassName = topLevelClassName(pathToFile) as String
+                                def ext = exts.getOrDefault(topLevelClassName, "java")
                                 def basename = classname.substring(classname.lastIndexOf("/") + 1).replaceAll("\\u0024.*", "")
-                                basename = "${basename}.java" as String
+                                basename = "${basename}.${ext}" as String
                                 if (!includeFileNames.empty && !includeFileNames.contains(basename)) {
                                     return
                                 }
-                                'class'(name: (classname).toString().replace("/", '.'), filename: filename, 'line-rate': counter(clazz, LINE), 'branch-rate': counter(clazz, BRANCH), complexity: counter(clazz, COMPLEXITY, this.&sum)) {
+                                'class'(name: (classname).toString().replace("/", '.'), filename: "${pathToFile}.${ext}", 'line-rate': counter(clazz, LINE), 'branch-rate': counter(clazz, BRANCH), complexity: counter(clazz, COMPLEXITY, this.&sum)) {
                                     def lynes = pkg.sourcefile.find {
                                         it.@name.equals(basename)
                                     }.line
@@ -155,13 +158,21 @@ class JacoboTask extends DefaultTask {
         return covered + missed
     }
 
-    def static guess_filename(path_to_class) {
+    def static pathToFile(path_to_class) {
         def match
         if ((match = path_to_class =~ /([^\u0024]*)/)) {
-            return "${match.group(1)}.java"
+            return "${match.group(1)}"
         } else {
-            return "${path_to_class}.java"
+            return "${path_to_class}"
         }
+    }
+
+    def static topLevelClassName(path_to_file) {
+        def index = path_to_file.lastIndexOf('/')
+        if (index != -1) {
+            return path_to_file.substring(index + 1)
+        }
+        return path_to_file
     }
 
     def static counter(source, type, operation = this.&fraction) {
@@ -173,5 +184,19 @@ class JacoboTask extends DefaultTask {
         } else {
             return operation(covered.toFloat(), missed.toFloat())
         }
+    }
+
+    def static sourceFileExts(source) {
+        def exts = [:]
+        source.sourcefile.each {
+            def topLevelClassName = it.@name as String
+            def index = topLevelClassName.lastIndexOf('.')
+            if (index != -1) {
+                def ext = topLevelClassName.substring(index + 1)
+                topLevelClassName = topLevelClassName.substring(0, index)
+                exts.put(topLevelClassName, ext)
+            }
+        }
+        return exts
     }
 }
